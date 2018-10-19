@@ -1,1 +1,1 @@
-# Servidor TCP para controlar el modelo GPS TK303G (nodejs)
+# Libreria para montar un servidor TCP para controlar el modelo GPS TK303G (nodejs)
