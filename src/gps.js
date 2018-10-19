@@ -14,6 +14,8 @@ export default class GPS extends EventEmitter {
 
 		this.on('data', (data) => {
 			var msgParts = this.adapter.parseData(data);
+
+			this.makeAction(msgParts.action, msgParts.message)
 		})
 	}
 
@@ -23,5 +25,21 @@ export default class GPS extends EventEmitter {
 		this.connection.write(msg);
 	};
 
-	makeAction() {}
+	makeAction(action, msg) {
+		switch(action) {
+			case 'login':
+				this.adapter.sendOk("LOAD");
+				break;
+			case 'online':
+				this.adapter.sendOk("ON");
+				break;
+			case 'location':
+				break;
+			case 'alert':
+				break;
+			case 'response':
+				break;
+			default: break;
+		}
+	}
 }
