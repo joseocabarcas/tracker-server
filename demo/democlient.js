@@ -21,5 +21,9 @@ client.on('data', function(data) {
 });
 
 client.on('end', function() {
+	console.log('Connection end');
+});
+
+client.on('close', function() {
 	console.log('Connection closed');
 });

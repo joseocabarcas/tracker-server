@@ -9,7 +9,7 @@ export default class Server extends EventEmitter {
 	constructor(opts, cb) {
 		super()
 		this.defaults = {
-			port: 8001,
+			port: 8090,
 		}
 		this.opts = Object.assign(this.defaults, opts)
 		this.devices = [];
@@ -17,6 +17,7 @@ export default class Server extends EventEmitter {
 		this.cb = cb
 		this.init(() => {
 			this.server = net.createServer((connection) => {
+				console.log('alguien se conecto');
 				// Listening
 				connection.device = new GPS(TK303G, connection, this)
 				this.devices.push(connection);
@@ -24,7 +25,6 @@ export default class Server extends EventEmitter {
 				//Once we receive data...
 				connection.on('data', function (data) {
 					console.log('data')
-					console.log(data)
 					connection.device.emit('data', data);
 				});
 
@@ -39,6 +39,13 @@ export default class Server extends EventEmitter {
 				connection.on('error', (error) => {
 					console.log('error')	
 					console.log(error);
+				});
+
+				connection.on('close', (close) => {
+					console.log('close')	
+					console.log(close);
+					this.devices.splice(this.devices.indexOf(connection), 1);
+					connection.device.emit('disconnected');
 				});
 
 				this.cb(connection.device, connection);
